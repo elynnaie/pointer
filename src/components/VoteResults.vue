@@ -4,7 +4,7 @@
     <ul v-if="$props.show && (voteResults.length > 0)" class="list-reset my-1">
       <li class="py-1 relative text-2xl" v-for="result in voteResults" :key="result.points" @mouseover="hovering = result.points" @mouseleave="hovering = null">
         <span :class="[ result.highest ? 'bg-blue-500 dark:bg-blue-600' : 'bg-gray-400 dark:bg-gray-500', 'points' ]" v-text="result.points"></span>
-        <span class="ml-2 text-gray-700 dark:text-gray-300" v-text="result.votes + ' ' + pluralizedVote(result.votes)"></span>
+        <span v-for="vote in result.votes" :key="vote" :class="[ result.highest ? 'bg-blue-500 dark:bg-blue-600' : 'bg-gray-400 dark:bg-gray-500', 'dot' ]"></span>
       </li>
     </ul>
     <span v-else class="block mt-2 font-light text-xl dark:text-gray-300">Waiting...</span>
@@ -71,6 +71,17 @@ export default {
       if (finalResults.length > 0) {
         finalResults[finalResults.length - 1].highest = true
       }
+
+      finalResults.sort(function (a, b) {
+        if (parseInt(a.points) < parseInt(b.points)) {
+          return -1
+        }
+        if (parseInt(a.points) > parseInt(b.points)) {
+          return 1
+        }
+
+        return 0
+      })
 
       return finalResults
     }
