@@ -21,6 +21,7 @@
           v-on:pass="passVote()"
           :show-pass-instructional="showPassInstructional"
           v-on:dismiss-pass-instructional="dismissPassInstructional"
+          :showVotes="showVotes"
         ></vote-recorder>
 
         <div class="sm:flex sm:justify-between">
