@@ -104,8 +104,12 @@ export default {
       this.connect()
     }
 
-    if (!localStorage.hasDismissedPassInstructional) {
+    if (localStorage.hasDismissedPassInstructional !== 'true') {
       this.showPassInstructional = true
+    }
+
+    if (localStorage.hasPassed === 'true') {
+      this.pass = true
     }
   },
 
@@ -163,10 +167,12 @@ export default {
     passVote: function () {
       this.pass = true
       this.vote = null
+      localStorage.hasPassed = 'true'
     },
 
     clearPass: function () {
       this.pass = false
+      localStorage.hasPassed = 'false'
     },
 
     revealVotes: function () {
@@ -315,7 +321,7 @@ export default {
 
     dismissPassInstructional: function () {
       this.showPassInstructional = false
-      localStorage.hasDismissedPassInstructional = true
+      localStorage.hasDismissedPassInstructional = 'true'
     },
   }
 }
