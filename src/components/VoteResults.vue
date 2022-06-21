@@ -2,6 +2,7 @@
   <div>
     <span class="block uppercase font-light text-3xl dark:text-gray-300">Results</span>
     <ul v-if="$props.show && (voteResults.length > 0)" class="list-reset my-1">
+      <span class="font-light dark:text-gray-300" v-text="timeSinceShow"></span>
       <li class="py-1 relative text-2xl" v-for="result in voteResults" :key="result.points">
         <span :class="[ result.highest ? 'bg-blue-500 dark:bg-blue-600' : 'bg-gray-400 dark:bg-gray-500', 'points' ]" v-text="result.points"></span>
         <span v-for="vote in result.votes" :key="vote" :class="[ result.highest ? 'bg-blue-500 dark:bg-blue-600' : 'bg-gray-400 dark:bg-gray-500', 'dot' ]"></span>
@@ -17,10 +18,30 @@ export default {
   props: ['votes', 'show'],
   data: function () {
     return {
+      shownAt: null,
+      now: Date.now(),
     }
   },
 
+  watch: {
+    show: function (value) {
+      if (value) {
+        this.shownAt = Date.now();
+      }
+    }
+  },
+
+  created: function () {
+    var self = this;
+    setInterval(function () {
+      self.now = Date.now();
+    }, 1000);
+  },
+
   computed: {
+    timeSinceShow: function () {
+      return "(" + parseInt((this.now - this.shownAt) / 1000) + "s old)";
+    },
     voteResults: function () {
       let results = {
         0: 0,
